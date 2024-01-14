@@ -14,7 +14,7 @@ Pulsar.registerFunction("generateStyleDictionaryTree", (rootGroup: TokenGroup, a
 
   // Add top level entries which don't belong to any user-defined group
   for (let token of tokensOfGroup(rootGroup, allTokens)) {
-    result[safeTokenName(token)] = representToken(token, allTokens, allGroups)
+    result[`leaf-${safeTokenName(token)}`] = representToken(token, allTokens, allGroups)
   }
 
   // Retrieve
