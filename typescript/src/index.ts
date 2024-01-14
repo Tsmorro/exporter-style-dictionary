@@ -14,9 +14,8 @@ Pulsar.registerFunction("generateStyleDictionaryTree", (rootGroup: TokenGroup, a
 
   // Add top level entries which don't belong to any user-defined group
   for (let token of tokensOfGroup(rootGroup, allTokens)) {
-    result[`leaf-${safeTokenName(token)}`] = representToken(token, allTokens, allGroups)
+    result[leafName(token)] = representToken(token, allTokens, allGroups)
   }
-
   // Retrieve
   return {
     [`${typeLabel(rootGroup.tokenType)}`]: result,
@@ -38,7 +37,7 @@ function representTree(rootGroup: TokenGroup, allTokens: Array<Token>, allGroups
 
     // Add each entry for each token, writing to the same write root
     for (let token of tokensOfGroup(group, allTokens)) {
-      writeSubObject[safeTokenName(token)] = representToken(token, allTokens, allGroups)
+      writeSubObject[leafName(token)] = representToken(token, allTokens, allGroups)
     }
   }
 
@@ -442,7 +441,7 @@ function referenceName(token: Token, allGroups: Array<TokenGroup>) {
     throw Error("JS: Unable to find token in any of the groups")
   }
   let containingGroup = occurances[0]
-  let tokenPart = safeTokenName(token)
+  let tokenPart = leafName(token)
   let groupParts = referenceGroupChain(containingGroup).map((g) => safeGroupName(g))
   return [...groupParts, tokenPart].join(".")
 }
@@ -451,8 +450,8 @@ function referenceName(token: Token, allGroups: Array<TokenGroup>) {
  * This replace spaces with dashes, also change anything non-alphanumeric char to it as well.
  * For example, ST&RK Industries will be changed to st-rk-industries
  */
-function safeTokenName(token: Token) {
-  return token.name.replace(/\W+/g, "-").toLowerCase()
+function leafName(token: Token) {
+  return `leaf-${token.name.replace(/\W+/g, "-").toLowerCase()}`
 }
 
 /** Retrieve safe group name made out of normal group name

@@ -9,8 +9,9 @@ declare global {
   //
   // Main functions and access points
   //
+  
   interface PulsarInterface {
-    registerFunction(name: string, fn: (...args) => any)
+    registerFunction(token, fn: (...args) => any)
     registerTransformer(
       name: string,
       fn: (transformedValue: any, ...args) => any
